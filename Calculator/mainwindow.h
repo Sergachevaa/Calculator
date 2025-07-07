@@ -2,6 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,6 +21,8 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QSqlDatabase db;
+    int currentRow = 0;
 
 private slots:
     void digits_numbers();
@@ -25,5 +31,6 @@ private slots:
     void on_pushButtonAC_clicked();
     void math_operations();
     void on_pushButton_equally_clicked();
+    void on_pushButton_load_clicked();
 };
 #endif // MAINWINDOW_H

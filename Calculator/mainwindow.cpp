@@ -8,6 +8,14 @@ MainWindow::MainWindow(QWidget *parent)
       ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    db = QSqlDatabase::addDatabase("QODBC");
+    db.setDatabaseName("demo_dsn");
+
+    if (!db.open())
+        qDebug() << "Ошибка подключения к базе:" << db.lastError().text();
+    else
+        qDebug() << "Подключение успешно!";
+
     connect(ui -> pushButton_0, SIGNAL(clicked()), this, SLOT (digits_numbers()));
     connect(ui -> pushButton_1, SIGNAL(clicked()), this, SLOT (digits_numbers()));
     connect(ui -> pushButton_2, SIGNAL(clicked()), this, SLOT (digits_numbers()));
@@ -24,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui -> pushButton_minus, SIGNAL(clicked()), this, SLOT (math_operations()));
     connect(ui -> pushButton_del, SIGNAL(clicked()), this, SLOT (math_operations()));
     connect(ui -> pushButton_mult, SIGNAL(clicked()), this, SLOT (math_operations()));
+    connect(ui->pushButton_load, SIGNAL(clicked()), this, SLOT (on_pushButton_load_clicked()));
 
     ui -> pushButton_plus ->setCheckable(true);
     ui -> pushButton_minus ->setCheckable(true);
@@ -46,9 +55,9 @@ void MainWindow::digits_numbers()
         ui->result->setText(button_text);
     else
         ui->result->setText(current_text + button_text);
+
+    ui->pushButtonAC->setText("<-");
 }
-
-
 
 void MainWindow::on_pushButton_point_clicked()
 {
@@ -86,11 +95,26 @@ void MainWindow::math_operations()
 
 void MainWindow::on_pushButtonAC_clicked()
 {
-    ui -> pushButton_plus ->setChecked(false);
-    ui -> pushButton_minus ->setChecked(false);
-    ui -> pushButton_mult ->setChecked(false);
-    ui -> pushButton_del ->setChecked(false);
-    ui -> result ->setText("0");
+    QString text = ui->result->text();
+
+    if (ui->pushButtonAC->text() == "AC")
+    {
+        ui->pushButton_plus->setChecked(false);
+        ui->pushButton_minus->setChecked(false);
+        ui->pushButton_mult->setChecked(false);
+        ui->pushButton_del->setChecked(false);
+        ui->result->setText("0");
+    }
+    else
+    {
+        if (text.length() > 1)
+            ui->result->setText(text.left(text.length() - 1));
+        else
+            ui->result->setText("0");
+
+        if (ui->result->text() == "0")
+            ui->pushButtonAC->setText("AC");
+    }
 }
 
 void MainWindow::on_pushButton_equally_clicked()
@@ -122,6 +146,7 @@ void MainWindow::on_pushButton_equally_clicked()
         ui -> result -> setText(new_label);
         ui -> pushButton_mult -> setChecked(false);
     }
+
     else if (ui -> pushButton_del -> isChecked())
     {
         if(num_second == 0)
@@ -134,4 +159,31 @@ void MainWindow::on_pushButton_equally_clicked()
         ui -> pushButton_del -> setChecked(false);
         }
     }
+}
+
+void MainWindow::on_pushButton_load_clicked()
+{
+    if (!db.isOpen())
+    {
+        qDebug() << "База не открыта";
+        return;
+    }
+
+    QSqlQuery query("SELECT value FROM test ORDER BY id", db);
+
+    int row = 0;
+    while (query.next())
+    {
+        if (row == currentRow)
+        {
+            QString value = query.value(0).toString();
+            ui->result->setText(value);
+            ui->pushButtonAC->setText("<-");
+            currentRow++;
+            return;
+        }
+        row++;
+    }
+    currentRow = 0;
+    qDebug() << "Больше строк нет, сброс"; //в моем случае рандомная генерация чисел
 }

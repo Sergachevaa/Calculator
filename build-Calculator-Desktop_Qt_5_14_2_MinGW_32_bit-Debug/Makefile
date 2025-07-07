@@ -274,6 +274,7 @@ Makefile: ../Calculator/Calculator.pro ../../Qt/Qt5.14.2/5.14.2/mingw73_32/mkspe
 		../Calculator/Calculator.pro \
 		../../Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Widgets.prl \
 		../../Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Gui.prl \
+		../../Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Sql.prl \
 		../../Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Core.prl \
 		../../Qt/Qt5.14.2/5.14.2/mingw73_32/lib/qtmain.prl \
 		../../Qt/Qt5.14.2/5.14.2/mingw73_32/mkspecs/features/build_pass.prf
@@ -482,6 +483,7 @@ Makefile: ../Calculator/Calculator.pro ../../Qt/Qt5.14.2/5.14.2/mingw73_32/mkspe
 ../Calculator/Calculator.pro:
 ../../Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Widgets.prl:
 ../../Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Gui.prl:
+../../Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Sql.prl:
 ../../Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Core.prl:
 ../../Qt/Qt5.14.2/5.14.2/mingw73_32/lib/qtmain.prl:
 ../../Qt/Qt5.14.2/5.14.2/mingw73_32/mkspecs/features/build_pass.prf:
